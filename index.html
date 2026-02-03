@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDP Auto & Home - Premium Insurance Intake</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>`n</head>
+<body>
+    <header class="site-header">
+        <div class="logo-container">
+            <img src="assets/rdp_logo_new.png" alt="RDP Insurance Logo" class="rdp-logo-top">
+        </div>
+    </header>
+
+    <section class="contact-info-strip">
+        <h2 class="contact-name">Lorraine Castillo</h2>
+        <div class="address-block">
+            2915 W Charleston Blvd Ste 170<br>
+            Las Vegas, NV 89102<br>
+            <strong>Phone: 702-665-7011</strong>
+        </div>
+    </section>
+
+    <main class="app-container">
+        <div class="form-card">
+            <div class="progress-container">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <section class="intake-form" id="intakeForm">
+                <!-- Step 1: Personal -->
+                <div class="step active" id="step1" data-step="1">
+                    <h2>Get Started</h2>
+                    <p>Provide your basic details to begin your personalized coverage review.</p>
+                    <div class="input-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" placeholder="John" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" placeholder="Doe" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="params_phone" placeholder="(702) 000-0000" required>
+                    </div>
+                    <button class="btn accent" onclick="nextStep()">Continue to Quote</button>
+                </div>
+
+                <!-- Step 2: Discovery -->
+                <div class="step" id="step2" data-step="2">
+                    <h2>Interest</h2>
+                    <p>Which assets would you like us to review for protection?</p>
+                    <div class="input-group">
+                        <label>Current Carrier</label>
+                        <input type="text" id="currentCarrier" placeholder="e.g. State Farm">
+                    </div>
+                    <div class="selection-grid">
+                        <div class="option" id="optAuto" onclick="toggleOption('auto')">
+                            <span class="icon">??</span>
+                            <span>Auto Coverage</span>
+                        </div>
+                        <div class="option" id="optHome" onclick="toggleOption('home')">
+                            <span class="icon">??</span>
+                            <span>Home Coverage</span>
+                        </div>
+                    </div>
+                    <div class="nav-btns">
+                        <button class="btn accent" onclick="nextStep()">Next Step</button>
+                        <button class="btn secondary" onclick="prevStep()">Go Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Vehicles -->
+                <div class="step" id="step3" data-step="3">
+                    <h2>Vehicles</h2>
+                    <p>Please list up to 4 vehicles. VIN is required for each.</p>
+                    <div id="vehicleList" class="dynamic-list"></div>
+                    <button class="btn add-item" onclick="addVehicle()">+ Add Another Vehicle</button>
+                    <div class="nav-btns">
+                        <button class="btn accent" onclick="nextStep()">Next Step</button>
+                        <button class="btn secondary" onclick="prevStep()">Go Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Drivers -->
+                <div class="step" id="step4" data-step="4">
+                    <h2>Drivers</h2>
+                    <p>Please list all household drivers. License and state are required.</p>
+                    <div id="driverList" class="dynamic-list"></div>
+                    <button class="btn add-item" onclick="addDriver()">+ Add Another Driver</button>
+                    <div class="nav-btns">
+                        <button class="btn accent" onclick="nextStep()">Next Step</button>
+                        <button class="btn secondary" onclick="prevStep()">Go Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Home -->
+                <div class="step" id="step5" data-step="5">
+                    <h2>Residence</h2>
+                    <p>Provide details for your primary property coverage.</p>
+                    <div class="input-group">
+                        <label>Property Address</label>
+                        <input type="text" id="homeAddress" placeholder="123 Luxury Lane, Las Vegas">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Year Built</label>
+                            <input type="number" id="homeYear" placeholder="2015">
+                        </div>
+                        <div class="input-group">
+                            <label>Square Footage</label>
+                            <input type="number" id="homeSqFt" placeholder="1850">
+                        </div>
+                    </div>
+                    <div class="nav-btns">
+                        <button class="btn accent" onclick="nextStep()">Review Summary</button>
+                        <button class="btn secondary" onclick="prevStep()">Go Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Review -->
+                <div class="step" id="step6" data-step="6">
+                    <h2>Final Review</h2>
+                    <p>Verify your information before securing your data.</p>
+                    <div id="reviewSummary" class="review-area"></div>
+                    <button class="btn accent pulse" onclick="submitForm()">Secure My Request</button>
+                    <div class="nav-btns">
+                        <button class="btn secondary" onclick="prevStep()">Edit Details</button>
+                    </div>
+                </div>
+
+                <!-- Step 7: Thank You -->
+                <div class="step" id="step7" data-step="7">
+                    <div class="thank-you-content">
+                        <h1 class="headline-xl">Thank you!</h1>
+                        <p class="subheadline">We received your information and will review your Auto & Home quote request.</p>
+                        <p class="reassurance">If we need anything else, we’ll reach out shortly.</p>
+                        
+                        <div class="cta-container">
+                            <a href="https://link.rdpinsurance.com/widget/booking/WtjAuHdAhGYVWax8OblH" target="_blank" class="btn accent">Book a Call</a>
+                            <button class="btn secondary" onclick="window.location.reload()">Return to Home</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
