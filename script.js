@@ -1,4 +1,4 @@
-﻿let currentStep = 1;
+let currentStep = 1;
 const totalSteps = 6;
 const state = {
     contact: {},
@@ -32,7 +32,12 @@ function nextStep() {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
-            phone: document.getElementById('params_phone').value
+            phone: document.getElementById('params_phone').value,
+            // Added Address Fields
+            address1: document.getElementById('address1').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+            postal_code: document.getElementById('postal_code').value
         };
         if (!state.contact.firstName || !state.contact.email) return alert('Please enter name and email.');
     }
@@ -62,11 +67,11 @@ function nextStep() {
 function prevStep() {
     if (currentStep === 5 && !state.discovery.interests.includes('auto')) {
         currentStep = 2;
-    } else if (currentStep === 4 && !state.discovery.interests.includes('home') && state.discovery.interests.includes('auto')) {
+    } else if (currentStep === 4 && !state.discovery.interests.includes('home') && state.discovery.interests.includes.auto) {
         currentStep = 3;
-    } else if (currentStep === 6 && !state.discovery.interests.includes('home') && state.discovery.interests.includes('auto')) {
+    } else if (currentStep === 6 && !state.discovery.interests.includes('home') && state.discovery.interests.includes.auto) {
         currentStep = 4;
-    } else if (currentStep === 6 && !state.discovery.interests.includes('home') && !state.discovery.interests.includes('auto')) {
+    } else if (currentStep === 6 && !state.discovery.interests.includes('home') && !state.discovery.interests.includes.auto) {
         currentStep = 2;
     } else {
         if (currentStep > 1) currentStep--;
@@ -165,6 +170,9 @@ function renderSummary() {
 
     area.innerHTML = `
         <div class="summary-item"><strong>Contact:</strong> ${state.contact.firstName} ${state.contact.lastName}</div>
+        <div class="summary-item" style="font-size: 0.8rem; color: var(--text-muted);">
+            ${state.contact.address1}, ${state.contact.city}, ${state.contact.state} ${state.contact.postal_code}
+        </div>
         <div class="summary-item"><strong>Interests:</strong> ${state.discovery.interests.join(', ')}</div>
         ${vehicleHtml}
         ${driverHtml}
@@ -194,7 +202,7 @@ async function submitForm() {
     }
 
     const payload = {
-        source: 'RDP Landing Page Intake',
+        source: 'RDP Landing Page Intake - Premium',
         ...state.contact,
         ...state.discovery,
         vehicles: state.vehicles,
