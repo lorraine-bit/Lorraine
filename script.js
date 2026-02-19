@@ -202,15 +202,45 @@ async function submitForm() {
         };
     }
 
+    // Build flat payload for GoHighLevel custom field mapping
     const payload = {
         source: 'RDP Landing Page Intake - Premium',
-        ...state.contact,
-        ...state.discovery,
-        vehicles: state.vehicles,
-        drivers: state.drivers,
-        home: state.home,
-        timestamp: new Date().toISOString()
+
+        // Contact fields
+        ...state.contact
     };
+
+    // Vehicle count + flatten vehicles 1-4 (placed immediately after address fields)
+    payload.vehicle_count = state.vehicles.length;
+    for (let i = 1; i <= 4; i++) {
+        const vehicle = state.vehicles[i - 1];
+        payload[`vehicle${i}_id`] = vehicle?.id || '';
+        payload[`vehicle${i}_year`] = vehicle?.year || '';
+        payload[`vehicle${i}_make`] = vehicle?.make || '';
+        payload[`vehicle${i}_model`] = vehicle?.model || '';
+        payload[`vehicle${i}_vin`] = vehicle?.vin || '';
+    }
+
+    // Driver count + flatten drivers 1-4
+    payload.driver_count = state.drivers.length;
+    for (let i = 1; i <= 4; i++) {
+        const driver = state.drivers[i - 1];
+        payload[`driver${i}_id`] = driver?.id || '';
+        payload[`driver${i}_name`] = driver?.name || '';
+        payload[`driver${i}_dob`] = driver?.dob || '';
+        payload[`driver${i}_license`] = driver?.license || '';
+        payload[`driver${i}_state`] = driver?.state || '';
+    }
+
+    // Discovery fields
+    payload.currentCarrier = state.discovery.currentCarrier || '';
+    payload.expDate = state.discovery.expDate || '';
+    payload.interest_auto = state.discovery.interests.includes('auto');
+    payload.interest_home = state.discovery.interests.includes('home');
+    payload.interests = state.discovery.interests.join(',');
+
+    // Timestamp
+    payload.timestamp = new Date().toISOString();
 
     try {
         const response = await fetch('https://services.leadconnectorhq.com/hooks/Q0SUs2gjxZuOIboKSyUx/webhook-trigger/61a36a48-14cd-4624-9e26-9ba3882ee9e2', {
